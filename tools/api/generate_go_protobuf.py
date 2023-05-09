@@ -157,7 +157,7 @@ if __name__ == "__main__":
     sync_go_protobufs(output, repo)
     last_sha = find_last_sync_sha(repo)
     changes = updated_since_sha(repo, last_sha)
-    if updated(repo):
+    if updated(repo) or True:
         print('Changes detected: %s' % changes)
         new_sha = changes[0]
         write_revision_info(repo, new_sha)

@@ -1,0 +1,62 @@
+name: 'Sync downstream'
+
+on:
+  push:
+    branches:
+    - main
+
+# It would be better if there was a concurrency/max/wait option, but
+# it seems there is not.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    uses: ./.github/workflows/_do_ci.yml
+    with:
+      ci: sync.${{ matrix.ci }}
+      auth_ci_bot_enabled: true
+      cache_bazel_enabled: ${{ matrix.cache }}
+      repo_fetch_depth: ${{ matrix.repo_fetch_depth }}
+      repo_downstream: ${{ matrix.ci }}
+      repo_downstream_path: ..
+      run_prefix: ${{ matrix.run_prefix }}
+      build_setup: ${{ matrix.build_setup }}
+    secrets: inherit
+    strategy:
+      fail-fast: false
+      matrix:
+        ci:
+        - envoy-filter-example
+        - data-plane-api
+        - go-control-plane
+        include:
+
+        - ci: data-plane-api
+          build_setup: false
+          cache: false
+          repo_fetch_depth: 0
+          run_prefix: ""
+
+        - ci: go-control-plane
+          build_setup: false
+          cache: true
+          repo_fetch_depth: 1
+          run_prefix: "ci/run_envoy_docker.sh"
+
+  sync_filter_example:
+    runs-on: ubuntu-20.04
+    name: Sync filter example
+    steps:
+    - uses: actions/checkout@v3
+    - id: dispatch
+      # uses: envoyproxy/toolshed/gh-actions/dispatch@45729a2fad7510c4e69732e047263a77ab7ab617
+      uses: ./.github/actions/dispatch
+      with:
+        repository: phlax/envoy-filter-example
+        ref: main
+        key: ${{ secrets.ENVOY_CI_TEST_BOT_KEY }}
+        workflow: envoy-sync.yaml
+        app_id: ${{ secrets.ENVOY_CI_SYNC_TEST_APP_ID }}
+        # installation_id: 5678
