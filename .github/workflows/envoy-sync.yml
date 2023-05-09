@@ -1,0 +1,56 @@
+name: 'Sync downstream'
+
+on:
+  push:
+    branches:
+    - main
+  # debugging
+  pull_request:
+
+# It would be better if there was a concurrency/max/wait option, but
+# it seems there is not.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    uses: ./.github/workflows/do_ci.yml
+    if: github.repository == 'envoyproxy/envoy'
+    with:
+      ci: sync.${{ matrix.ci }}
+      authSSHKey: ${{ matrix.key }}
+      cacheBazelEnabled: ${{ matrix.cache }}
+      repoDownstream: ${{ matrix.ci }}
+      runPrefix: ${{ matrix.runPrefix }}
+      buildSetup: ${{ matrix.buildSetup }}
+    strategy:
+      fail-fast: false
+      matrix:
+        ci:
+        - envoy-filter-example
+        - data-plane-api
+        - go-control-plane
+        include:
+        - ci: envoy-filter-example
+          buildSetup: false
+          cache: false
+          runPrefix: ""
+          key: XXX
+          # ${{ secrets.SSH_FILTER_EXAMPLE_KEY }}
+
+        - ci: data-plane-api
+          buildSetup: false
+          cache: false
+          repoDownstreamPath: ..
+          runPrefix: ""
+          key: XXX
+          # ${{ secrets.SSH_DATA_PLANE_API_KEY }}
+
+        - ci: go-control-plane
+          buildSetup: false
+          cache: true
+          repoDownstreamPath: ..
+          key: XXX
+          runPrefix: "ci/run_envoy_docker.sh"
+          # ${{ secrets.SSH_GO_CONTROL_PLANE_KEY }}
