@@ -1,0 +1,58 @@
+
+
+    const octokit = new Octokit({
+      // @ts-expect-error
+      auth: repo.token,
+      baseUrl: process.env.GITHUB_API_URL || 'https://api.github.com',
+    })
+
+    console.log(`DISPTCHIO ${owner}/${repo}`)
+
+    const dispatched = await octokit.rest.actions.createWorkflowDispatch({
+      owner,
+      repo,
+      workflow_id,
+      ref,
+    })
+
+        inputs: typeof (payload) === 'object' ? payload : {},
+
+
+============
+
+    if (scope !== '') {
+      const scopedData = installations.data.find(
+        (item) => item.account?.login === scope
+      );
+      if (scopedData === undefined) {
+        throw new Error(`set scope is ${scope}, but installation is not found`);
+      }
+      installationId = scopedData.id;
+    }
+
+
+      console.log(`jq ${files}`)
+      console.log(`> '${files}'`)
+      const proc = spawn("jq", files)
+      proc.process.stdin.setEncoding('utf-8');
+      proc.process.stdin.write(`${files}`)
+      proc.process.stdin.end()
+      const response = await proc
+      const stdout = response.stdout
+      console.log("RECEIVED STDOUT")
+      console.log(stdout)
+      console.log("DONE")
+      console.log("RECEIVED STDERR")
+      console.log(response.stderr)
+      console.log("DONE")
+
+
+    return
+    const child = spawn(command.join(" "))
+    child.stdout.pipe(process.stdout);
+    child.stdin.write(input)
+    child.stdin.end();
+    const output = child.stdout.read()
+    core.info(output)
+
+    core.setFailed(`jq: ${output}`)

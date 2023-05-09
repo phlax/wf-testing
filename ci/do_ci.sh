@@ -679,6 +679,19 @@ case $CI_TARGET in
         bazel_envoy_binary_build sizeopt
         ;;
 
+    sync.data-plane-api)
+        "${ENVOY_SRCDIR}/ci/api_mirror.sh"
+        ;;
+
+    sync.envoy-filter-example)
+        "${ENVOY_SRCDIR}/ci/filter_example_mirror.sh"
+        ;;
+
+    sync.go-control-plane)
+        setup_clang_toolchain
+        "${ENVOY_SRCDIR}/tools/api/generate_go_protobuf.py"
+        ;;
+
     tsan)
         setup_clang_toolchain
         echo "bazel TSAN debug build with tests"

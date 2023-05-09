@@ -1,0 +1,114 @@
+name: Bazel CI
+
+on:
+  workflow_call:
+    inputs:
+      ci:
+        required: true
+        type: string
+      auth_ci_bot_enabled:
+        type: boolean
+        default: false
+      build_setup:
+        type: boolean
+        default: true
+      cache_bazel_enabled:
+        type: boolean
+        default: true
+      cache_bazel_key_files:
+        type: string
+        default: |
+          ./WORKSPACE
+          **/*.bzl
+      cache_bazel_path:
+        type: string
+        default: |
+          /tmp/envoy-docker-build/.cache/
+          /tmp/envoy-docker-build/bazel_root/install/
+          /tmp/envoy-docker-build/repository_cache/
+          /tmp/envoy-docker-build/bazel_root/base/external
+      repo_downstream:
+        type: string
+      repo_downstream_owner:
+        type: string
+        default: phlax
+        # envoyproxy
+      repo_downstream_path:
+        type: string
+      repo_fetch_depth:
+        type: number
+        default: 1
+      run_ci:
+        type: string
+        default: ci/do_ci.sh
+      run_prefix:
+        type: string
+        default: ci/run_envoy_docker.sh
+
+permissions:
+  contents: read
+
+
+jobs:
+  ci:
+    runs-on: ubuntu-20.04
+    name: CI (${{ inputs.ci }})
+    steps:
+    # Repo/s
+    - name: 'Checkout repository'
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: ${{ inputs.repo_fetch_depth }}
+    - name: 'Checkout downstream repository'
+      uses: actions/checkout@v3
+      if: ${{ inputs.repo_downstream }}
+      with:
+        repository: "${{ inputs.repo_downstream_owner }}/${{ inputs.repo_downstream }}"
+        path: "${{ inputs.repo_downstream }}"
+        ssh-key: ${{ secrets.ENVOY_CI_BOT_KEY }}
+    - run: mv ${{ inputs.repo_downstream }} ${{ inputs.repo_downstream_path }}
+      if: ${{ inputs.repo_downstream_path }}
+
+    # Cache
+    - id: hashed
+      uses: envoyproxy/toolshed/gh-actions/hashfiles@45729a2fad7510c4e69732e047263a77ab7ab617
+      with:
+        files: ${{ inputs.cache_bazel_key_files }}
+    - name: Cache bazel workspace
+      uses: actions/cache@v3
+      if: ${{ inputs.cache_bazel_enabled }}
+      with:
+        key: "${{ github.base_ref || github.ref }}|${{ inputs.ci }}|${{ steps.hashed.outputs.value }}"
+        path: "${{ inputs.cache_bazel_path }}"
+
+    - run: df -h
+      name: Disk usage at the beginning of the build
+
+    - id: no_build_setup
+      uses: envoyproxy/toolshed/gh-actions/elif@1ad3c74384f6ca2d9a15263c7ccfe47a3ff50f98
+      with:
+        input: ${{ inputs.build_setup }}
+        default:
+        elif: |
+          false: 1
+
+    # Target
+    - run: "${{ inputs.run_prefix }} ${{ inputs.run_ci }} ${{ inputs.ci }}"
+      name: "Do ci (${{ inputs.ci }})"
+      env:
+        NO_BUILD_SETUP: "${{ steps.no_build_setup.outputs.value }}"
+
+        # debugging
+        ENVOY_DOCKER_PULL: 1
+
+    - run: |
+        df -h
+        echo "============================================================"
+        if [[ -e "/tmp/envoy-docker-build" ]]; then
+            du -ch "/tmp/envoy-docker-build" | grep -E "[0-9]{2,}M|[0-9]G" || {
+                echo "No files found in /tmp/envoy-docker-build"
+            }
+        else
+            echo "/tmp/envoy-docker-build does not exist"
+        fi
+      name: Disk usage at the end of the build
