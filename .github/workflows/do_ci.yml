@@ -40,12 +40,13 @@ permissions:
 jobs:
   ci:
     runs-on: ubuntu-20.04
-    if: github.repository == 'envoyproxy/envoy'
     name: CI (${{ inputs.ci }})
     steps:
     # Repo/s
     - name: 'Checkout repository'
       uses: actions/checkout@v3
+      with:
+        repository: envoyproxy/envoy
     - name: 'Checkout downstream repository'
       uses: actions/checkout@v3
       if: ${{ inputs.repoDownstream }}

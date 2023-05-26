@@ -16,7 +16,7 @@ concurrency:
 jobs:
   sync:
     uses: ./.github/workflows/do_ci.yml
-    if: github.repository == 'envoyproxy/envoy'
+    # if: github.repository == 'envoyproxy/envoy'
     with:
       ci: sync.${{ matrix.ci }}
       authSSHKey: ${{ matrix.key }}
