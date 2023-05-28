@@ -52,7 +52,6 @@ jobs:
         ci:
         - envoy-filter-example
     steps:
-    - uses: actions/checkout@v3
     - id: dispatch
       uses: envoyproxy/toolshed/gh-actions/dispatch@1f1feae1e372dde41ecc6830028989bb6037c480
       with:
