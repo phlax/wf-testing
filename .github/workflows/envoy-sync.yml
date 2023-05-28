@@ -28,7 +28,6 @@ jobs:
       fail-fast: false
       matrix:
         ci:
-        - envoy-filter-example
         - data-plane-api
         - go-control-plane
         include:
@@ -45,15 +44,19 @@ jobs:
           repo_fetch_depth: 1
           run_prefix: "ci/run_envoy_docker.sh"
 
-  sync_filter_example:
+  sync2:
     runs-on: ubuntu-20.04
-    name: Sync filter example
+    strategy:
+      fail-fast: false
+      matrix:
+        ci:
+        - envoy-filter-example
     steps:
     - uses: actions/checkout@v3
     - id: dispatch
       uses: envoyproxy/toolshed/gh-actions/dispatch@1f1feae1e372dde41ecc6830028989bb6037c480
       with:
-        repository: phlax/envoy-filter-example
+        repository: "phlax/${{ matrix.ci }}"
         ref: main
         key: ${{ secrets.ENVOY_CI_TEST_BOT_KEY }}
         workflow: envoy-sync.yaml
