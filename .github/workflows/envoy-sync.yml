@@ -28,16 +28,8 @@ jobs:
       fail-fast: false
       matrix:
         ci:
-        - data-plane-api
         - go-control-plane
         include:
-
-        - ci: data-plane-api
-          build_setup: false
-          cache: false
-          repo_fetch_depth: 0
-          run_prefix: ""
-
         - ci: go-control-plane
           build_setup: false
           cache: true
@@ -51,6 +43,7 @@ jobs:
       matrix:
         ci:
         - envoy-filter-example
+        - data-plane-api
     steps:
     - id: dispatch
       uses: envoyproxy/toolshed/gh-actions/dispatch@1f1feae1e372dde41ecc6830028989bb6037c480
