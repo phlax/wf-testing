@@ -51,12 +51,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - id: dispatch
-      # uses: envoyproxy/toolshed/gh-actions/dispatch@45729a2fad7510c4e69732e047263a77ab7ab617
-      uses: ./.github/actions/dispatch
+      uses: envoyproxy/toolshed/gh-actions/dispatch@1f1feae1e372dde41ecc6830028989bb6037c480
       with:
         repository: phlax/envoy-filter-example
         ref: main
         key: ${{ secrets.ENVOY_CI_TEST_BOT_KEY }}
         workflow: envoy-sync.yaml
         app_id: ${{ secrets.ENVOY_CI_SYNC_TEST_APP_ID }}
-        # installation_id: 5678
