@@ -58,6 +58,6 @@ jobs:
       with:
         repository: "phlax/${{ matrix.ci }}"
         ref: main
-        key: ${{ secrets.ENVOY_CI_TEST_BOT_KEY }}
+        key: "${{ secrets.ENVOY_CI_TEST_BOT_KEY }}"
         workflow: envoy-sync.yaml
         app_id: ${{ secrets.ENVOY_CI_SYNC_TEST_APP_ID }}
