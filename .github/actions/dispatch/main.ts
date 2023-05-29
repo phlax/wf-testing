@@ -37,15 +37,16 @@ const run = async (): Promise<void> => {
     })
 
     const parsedInputs = yaml.load(providedInputs)
-    const inputs: { [key: string]: string } = {}
+    const inputItems: { [key: string]: string } = {}
 
     for (const [key, value] of Object.entries(parsedInputs)) {
       if (value instanceof String) {
-        inputs[key] = String(value)
+        inputItems[key] = String(value)
       } else {
-        JSON.stringify(value)
+        inputItems[key] = JSON.stringify(value)
       }
     }
+    const inputs = JSON.stringify(inputItems)
 
     // @ts-expect-error
     if (!resp || !resp.token) {
