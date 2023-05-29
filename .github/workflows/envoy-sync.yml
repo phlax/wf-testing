@@ -1,4 +1,4 @@
-name: 'Sync trigger'
+name: 'Sync downstream'
 
 on:
   push:
