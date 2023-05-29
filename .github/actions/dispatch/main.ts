@@ -45,6 +45,7 @@ const run = async (): Promise<void> => {
       } else if (value instanceof Number) {
         inputs[key] = String(value)
       } else {
+        console.log(typeof value)
         inputs[key] = JSON.stringify(value)
       }
     }
