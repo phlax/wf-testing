@@ -40,7 +40,8 @@ const run = async (): Promise<void> => {
     const inputs: { [key: string]: string } = {}
 
     for (const [key, value] of Object.entries(parsedInputs)) {
-      inputs[key] = JSON.stringify(value)
+      inputs[key] = String(value)
+      // JSON.stringify(value)
     }
 
     // @ts-expect-error
