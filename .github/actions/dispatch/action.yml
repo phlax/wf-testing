@@ -23,6 +23,9 @@ inputs:
   workflow:
     description: >
       Workflow to dispatch.
+  inputs:
+    description: >
+      Yaml k/v string of inputs to send, values are stringified with JSON.
 runs:
   using: 'node16'
   main: 'dist/index.js'
