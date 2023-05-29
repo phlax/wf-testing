@@ -1,0 +1,41 @@
+        # echo "NEWHASHED ${{ hashFiles(join(fromJSON(steps.files.outputs.value), ',')) }}"
+        # echo "ACTUAL ${{ hashFiles('./WORKSPACE', '**/*.bzl') }}"
+
+
+    # Caching
+    - id: files
+      uses: envoyproxy/toolshed/gh-actions/jq@506b5372401ecb3232ec2b787eddb77201a6bc01
+      with:
+        input: "${{ inputs.cacheBazelKeyFiles2 }}"
+        options: -crRs
+        filter: 'split("\n")'
+
+        files: ${{ steps.files.outputs.value }}
+        format: json
+
+        # "${{ fromJSON('{\"false\": \"1\", \"true\": \"\"}')[ inputs.buildSetup == true] }}"
+
+
+  sync:
+    uses: ./.github/workflows/_do_ci.yml
+    with:
+      ci: sync.${{ matrix.ci }}
+      auth_ci_bot_enabled: true
+      cache_bazel_enabled: ${{ matrix.cache }}
+      repo_fetch_depth: ${{ matrix.repo_fetch_depth }}
+      repo_downstream: ${{ matrix.ci }}
+      repo_downstream_path: ..
+      run_prefix: ${{ matrix.run_prefix }}
+      build_setup: ${{ matrix.build_setup }}
+    secrets: inherit
+    strategy:
+      fail-fast: false
+      matrix:
+        ci:
+        - go-control-plane
+        include:
+        - ci: go-control-plane
+          build_setup: false
+          cache: true
+          repo_fetch_depth: 1
+          run_prefix: "ci/run_envoy_docker.sh"
