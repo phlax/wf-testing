@@ -11,7 +11,8 @@ jobs:
   sync:
     runs-on: ubuntu-20.04
     steps:
-    - uses: envoyproxy/toolshed/gh-actions/dispatch@1f1feae1e372dde41ecc6830028989bb6037c480
+    - uses: ./.github/actions/dispatch
+      # envoyproxy/toolshed/gh-actions/dispatch@1f1feae1e372dde41ecc6830028989bb6037c480
       with:
         repository: "phlax/wf-testing"
         ref: "${{ github.head_ref }}"
