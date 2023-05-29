@@ -22,7 +22,7 @@ jobs:
         - envoy-filter-example
         - data-plane-api
     steps:
-    - uses: envoyproxy/toolshed/gh-actions/dispatch@1f1feae1e372dde41ecc6830028989bb6037c480
+    - uses: envoyproxy/toolshed/gh-actions/dispatch@888c0c392febee0d7ba9d4b3fe02b218d94f2001
       with:
         repository: "phlax/${{ matrix.ci }}"
         ref: main

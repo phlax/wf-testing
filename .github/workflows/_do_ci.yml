@@ -71,7 +71,7 @@ jobs:
 
     # Cache
     - id: hashed
-      uses: envoyproxy/toolshed/gh-actions/hashfiles@45729a2fad7510c4e69732e047263a77ab7ab617
+      uses: envoyproxy/toolshed/gh-actions/hashfiles@888c0c392febee0d7ba9d4b3fe02b218d94f2001
       with:
         files: ${{ inputs.cache_bazel_key_files }}
     - name: Cache bazel workspace
@@ -85,7 +85,7 @@ jobs:
       name: Disk usage at the beginning of the build
 
     - id: no_build_setup
-      uses: envoyproxy/toolshed/gh-actions/elif@1ad3c74384f6ca2d9a15263c7ccfe47a3ff50f98
+      uses: envoyproxy/toolshed/gh-actions/elif@888c0c392febee0d7ba9d4b3fe02b218d94f2001
       with:
         input: ${{ inputs.build_setup }}
         default:
