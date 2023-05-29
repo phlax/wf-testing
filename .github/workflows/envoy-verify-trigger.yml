@@ -20,3 +20,6 @@ jobs:
         key: "${{ secrets.ENVOY_CI_TEST_BOT_KEY }}"
         workflow: envoy-verify.yml
         app_id: ${{ secrets.ENVOY_CI_SYNC_TEST_APP_ID }}
+        inputs: |
+          foo: bar
+          foo2: baz
