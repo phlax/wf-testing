@@ -22,5 +22,5 @@ jobs:
         app_id: ${{ secrets.ENVOY_CI_SYNC_TEST_APP_ID }}
         inputs: |
           ref: ${{ github.event.pull_request.merge_commit_sha }}
-          sha: ${{ github.event.pull_request.sha }}
+          sha: ${{ github.event.pull_request.head.sha }}
           head_ref: ${{ github.event.pull_request.head.ref }}
