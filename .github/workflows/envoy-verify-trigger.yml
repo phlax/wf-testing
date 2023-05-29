@@ -1,0 +1,20 @@
+name: 'Sync downstream'
+
+on:
+  pull_request_target:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: envoyproxy/toolshed/gh-actions/dispatch@1f1feae1e372dde41ecc6830028989bb6037c480
+      with:
+        repository: "phlax/wf-testing"
+        ref: main
+        key: "${{ secrets.ENVOY_CI_TEST_BOT_KEY }}"
+        workflow: envoy-verify.yaml
+        app_id: ${{ secrets.ENVOY_CI_SYNC_TEST_APP_ID }}
