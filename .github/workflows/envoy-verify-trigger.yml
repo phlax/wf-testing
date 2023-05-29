@@ -16,5 +16,5 @@ jobs:
         repository: "phlax/wf-testing"
         ref: main
         key: "${{ secrets.ENVOY_CI_TEST_BOT_KEY }}"
-        workflow: envoy-verify.yaml
+        workflow: envoy-verify.yml
         app_id: ${{ secrets.ENVOY_CI_SYNC_TEST_APP_ID }}
