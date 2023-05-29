@@ -16,7 +16,7 @@ jobs:
       # envoyproxy/toolshed/gh-actions/dispatch@1f1feae1e372dde41ecc6830028989bb6037c480
       with:
         repository: "phlax/wf-testing"
-        ref: "refs/pull/${{ github.event.pull_request.number  }}/merge"
+        ref: "refs/pull/${{ github.event.pull_request.number  }}/head"
         key: "${{ secrets.ENVOY_CI_TEST_BOT_KEY }}"
         workflow: envoy-verify.yml
         app_id: ${{ secrets.ENVOY_CI_SYNC_TEST_APP_ID }}
