@@ -40,9 +40,7 @@ const run = async (): Promise<void> => {
     const inputs: { [key: string]: string } = {}
 
     for (const [key, value] of Object.entries(parsedInputs)) {
-      if (value instanceof String) {
-        inputs[key] = String(value)
-      } else if (value instanceof Number) {
+      if (typeof value === 'string' || typeof value === 'number') {
         inputs[key] = String(value)
       } else {
         console.log(typeof value)
