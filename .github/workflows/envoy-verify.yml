@@ -37,6 +37,7 @@ jobs:
   verify-examples:
     runs-on: ubuntu-20.04
     needs: check
+    name: "Verify/examples (${{ github.event.inputs.head_ref }})"
     steps:
     - run: |
         echo "Disk space before cruft removal"
