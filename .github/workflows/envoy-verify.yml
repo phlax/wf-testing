@@ -34,9 +34,10 @@ jobs:
       workflowName: ${{ github.workflow }}
 
   # Runs untrusted code
-  verify-examples-${{ github.event.inputs.head_ref }}:
+  verify-examples:
     runs-on: ubuntu-20.04
     needs: check
+    name: "Verify/examples (${{ github.event.inputs.head_ref }})"
     steps:
     - run: |
         echo "Disk space before cruft removal"
