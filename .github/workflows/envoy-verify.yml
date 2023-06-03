@@ -34,7 +34,7 @@ jobs:
       workflowName: ${{ github.workflow }}
 
   # Runs untrusted code
-  verify-examples:
+  verify-examples-${{ github.event.inputs.head_ref }}:
     runs-on: ubuntu-20.04
     needs: check
     steps:
