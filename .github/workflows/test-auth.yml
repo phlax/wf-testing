@@ -1,0 +1,24 @@
+name: 'TEST AUTH'
+
+on:
+  push:
+    branches:
+    - main
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-20.04
+    steps:
+    - id: appauth
+      uses: envoyproxy/toolshed/gh-actions/appauth@actions-v0.0.1
+      with:
+        key: ${{ secrets.ENVOY_CI_TEST_BOT_KEY }}
+        app_id: ${{ secrets.ENVOY_CI_SYNC_TEST_APP_ID }}
+    - run: |
+        echo "${KEY:0:5}"
+      env:
+        KEY: ${{ steps.appauth.outputs.token }}
