@@ -22,6 +22,9 @@ jobs:
         - envoy-filter-example
         - data-plane-api
     steps:
+    - name: 'Checkout Repository'
+      uses: actions/checkout@v3
+
     # - uses: envoyproxy/toolshed/gh-actions/dispatch@actions-v0.0.2
     - uses: ./.github/actions/dispatch
       with:
