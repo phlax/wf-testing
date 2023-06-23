@@ -28,7 +28,7 @@ jobs:
     # - uses: envoyproxy/toolshed/gh-actions/dispatch@actions-v0.0.2
     - uses: ./.github/actions/dispatch
       with:
-        repository: "envoyproxy/${{ matrix.downstream }}"
+        repository: "phlax/${{ matrix.downstream }}"
         ref: main
         key: "${{ secrets.ENVOY_CI_TEST_BOT_KEY }}"
         workflow: envoy-sync.yaml
