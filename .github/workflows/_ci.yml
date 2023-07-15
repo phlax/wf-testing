@@ -47,3 +47,5 @@ jobs:
         else
             ${{ inputs.command_ci }} ${{ inputs.target }}--testing
         fi
+      env:
+        ENVOY_DOCKER_PULL: 1
