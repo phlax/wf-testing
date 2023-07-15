@@ -31,6 +31,7 @@ concurrency:
 jobs:
   do_ci:
     runs-on: ubuntu-22.04
+    name: ./ci/do_ci.sh ${{ inputs.target }}
     steps:
     - uses: actions/checkout@v3
       with:
