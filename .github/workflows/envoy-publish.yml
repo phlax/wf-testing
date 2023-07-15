@@ -48,7 +48,7 @@ jobs:
           managed: false
           command_prefix: ""
     uses: ./.github/workflows/_ci.yml
-    name: CI
+    name: CI ${{ matrix.target }}
     with:
       target: ${{ matrix.target }}
       rbe: ${{ matrix.rbe }}
