@@ -23,13 +23,12 @@ jobs:
         echo "CREATE TMPFS"
         mkdir -p /tmp/cache-marker
 
-    - name: Restore cache marker
+    - name: Check cache
       id: cache-marker-restore
       uses: actions/cache/restore@v3
       with:
-        path: |
-          /tmp/cache-marker
-        key: ${{ inputs.image_tag }}-${{ inputs.version }}-marker
+        lookup-only: true
+        key: ${{ inputs.image_tag }}-${{ inputs.version }}
 
     - id: fetch_image
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != true }}
