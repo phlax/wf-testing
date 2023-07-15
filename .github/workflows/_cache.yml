@@ -8,7 +8,7 @@ on:
         required: true
       version:
         type: string
-        default: v001
+        default: v002
 
 concurrency:
   group: cache_docker
