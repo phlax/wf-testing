@@ -19,6 +19,10 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
 
+    - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
+      run: |
+        sudo mkdir -p /tmp/build-image-cache
+
     - name: Check cache
       id: cache-restore
       uses: actions/cache/restore@v3
@@ -27,10 +31,6 @@ jobs:
           /tmp/build-image-cache
         lookup-only: true
         key: ${{ inputs.image_tag }}-${{ inputs.version }}
-
-    - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
-      run: |
-        sudo mkdir -p /tmp/build-image-cache
 
     - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
       run: sudo systemctl stop docker
