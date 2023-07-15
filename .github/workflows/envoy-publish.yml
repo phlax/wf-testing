@@ -37,6 +37,7 @@ jobs:
         - target: verify_examples
           rbe: false
           managed: false
+          command_prefix: ""
     uses: ./.github/workflows/_ci.yml
     name: CI ${{ matrix.target }}
     with:
