@@ -4,7 +4,8 @@ on:
   workflow_call:
     inputs:
       target:
-    # inputs - target
+        required: true
+        type: string
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}-${{ github.workflow }}-ci
@@ -22,7 +23,7 @@ jobs:
       run: git config --global --add safe.directory /__w/envoy/envoy
 
     - id: do_ci
-      name: 'Run CI target ${{ github.inputs.target }}'
+      name: 'Run CI target ${{ inputs.target }}'
       run: |
         echo "run CI target ..."
       # setup RBE variables, similar to azp/bazel.yml
