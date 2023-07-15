@@ -25,10 +25,8 @@ jobs:
     uses: ./.github/workflows/env.yml
     secrets: inherit
 
-  # Runs untrusted code
   publish:
-    runs-on: ubuntu-22.04
-    needs: env
-    steps:
-    - run: |
-        echo "Running a target ..."
+    uses: ./.github/workflows/_ci.yml
+    secrets: inherit
+    with:
+      target: publish
