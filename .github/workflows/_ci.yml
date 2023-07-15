@@ -32,23 +32,30 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  cache:
-    uses: ./.github/workflows/_docker_restore.yml
-    secrets: inherit
-    if: "${{ inputs.cache_build_image != '' }}"
-    with:
-      image_tag: "${{ inputs.cache_build_image }}"
-
   do_ci:
     runs-on: ubuntu-22.04
-    needs: cache
     name: ./ci/do_ci.sh ${{ inputs.target }}
     steps:
     - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
     - name: Add safe directory
       run: git config --global --add safe.directory /__w/envoy/envoy
+    - run: |
+        sudo mkdir -p /tmp/build-image-cache
+        sudo mount -t tmpfs none /tmp/build-image-cache
+    - name: Restore cache
+      id: cache-restore
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+          /tmp/build-image-cache
+        key: ${{ inputs.cache_build_image }}-v004
+    - run: |
+        sudo systemctl stop docker
+        sudo mv /var/lib/docker /var/lib/docker.orig
+        sudo mkdir -p /var/lib/docker
+        sudo -s sh -c 'zstd --stdout -d "/tmp/build-image-cache/docker.tar.zst" | tar -xf - -C /var/lib/docker'
+        sudo systemctl start docker
+        sudo umount /tmp/build-image-cache
 
     - id: do_ci
       name: 'Run CI target ${{ inputs.target }}'
