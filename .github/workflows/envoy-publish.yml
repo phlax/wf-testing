@@ -30,7 +30,7 @@ jobs:
     uses: ./.github/workflows/_cache.yml
     secrets: inherit
     with:
-      image_tag: ${{ needs.env.outputs.envoy_build_ubuntu }}
+      image_tag: "${{ needs.env.outputs.build_image_ubuntu }}"
 
   ci:
     needs:
