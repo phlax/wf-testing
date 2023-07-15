@@ -52,7 +52,7 @@ jobs:
 
         echo 1 > /tmp/cache-marker/marker
 
-    - id: docker-stop
+    - id: docker-stop-again
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       run: |
         echo "DO SKIP ME!!!"
