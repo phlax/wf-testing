@@ -18,11 +18,6 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
 
-    - id: create-tmpfs
-      run: |
-        echo "CREATE TMPFS"
-        mkdir -p /tmp/cache-marker
-
     - name: Check cache
       id: cache-marker-restore
       uses: actions/cache/restore@v3
@@ -32,7 +27,22 @@ jobs:
         lookup-only: true
         key: ${{ inputs.image_tag }}-${{ inputs.version }}
 
-    - id: fetch_image
+    - id: docker-stop
+      if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
+      run: |
+        echo "DO SKIP ME!!!"
+
+    - id: docker-paths
+      if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
+      run: |
+        echo "DO SKIP ME!!!"
+
+    - id: docker-restart
+      if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
+      run: |
+        echo "DO SKIP ME!!!"
+
+    - id: docker-fetch
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       run: |
         echo "DO SKIP ME!!!"
@@ -42,8 +52,18 @@ jobs:
 
         echo 1 > /tmp/cache-marker/marker
 
+    - id: docker-stop
+      if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
+      run: |
+        echo "DO SKIP ME!!!"
+
+    - id: docker-save
+      if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
+      run: |
+        echo "DO SKIP ME!!!"
+
     - name: Save cache marker
-      if: ${{ steps.cache-marker-restore.outputs.cache-hit != true }}
+      if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       id: cache-marker-save
       uses: actions/cache/save@v3
       with:
