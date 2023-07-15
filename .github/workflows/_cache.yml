@@ -32,7 +32,7 @@ jobs:
         key: ${{ inputs.image_tag }}-${{ inputs.version }}-marker
 
     - id: fetch_image
-      if: steps.cache-marker-restore.outputs.cache-hit != true
+      if: ${{ steps.cache-marker-restore.outputs.cache-hit != true }}
       run: |
         echo "DO SKIP ME!!!"
         echo ${{ steps.cache-marker-restore.outputs.cache-hit }}
@@ -41,7 +41,7 @@ jobs:
         echo 1 > /tmp/cache-marker/marker
 
     - name: Save cache marker
-      if: steps.cache-marker-restore.outputs.cache-hit != true
+      if: ${{ steps.cache-marker-restore.outputs.cache-hit != true }}
       id: cache-marker-save
       uses: actions/cache/save@v3
       with:
