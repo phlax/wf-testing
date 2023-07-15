@@ -19,10 +19,6 @@ jobs:
   cache:
     runs-on: ubuntu-22.04
     steps:
-    - uses: ./.github/actions/cache/prime
-      with:
-        cache_build_image: ${{ inputs.cache_build_image }}
-
     - run: |
         sudo mkdir -p /tmp/build-image-cache
 
