@@ -43,7 +43,7 @@ jobs:
         echo " managed: ${{ inputs.rbe }}"
         echo " bazel_extra: ${{ inputs.bazel_extra }}"
 
-        ./ci/run_envoy_docker.sh 'ci/do_ci.sh ${{ target }}--testing'
+        ./ci/run_envoy_docker.sh 'ci/do_ci.sh ${{ inputs.target }}--testing'
 
 
       # setup RBE variables, similar to azp/bazel.yml
