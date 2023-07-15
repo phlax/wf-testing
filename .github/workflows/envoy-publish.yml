@@ -26,10 +26,13 @@ jobs:
     secrets: inherit
 
   ci:
+    requires:
+    - env
     strategy:
       matrix:
         target:
         - publish
+        - publish-other
     uses: ./.github/workflows/_ci.yml
     with:
       target: ${{ matrix.target }}
