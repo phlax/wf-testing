@@ -30,14 +30,10 @@ jobs:
     - env
     strategy:
       matrix:
-        target:
-        - publish
-        - publish-other
-        rbe:
-        - true
-        managed:
-        - true
         include:
+        - target: publish
+          rbe: true
+          managed: true
         - target: publish-other
           rbe: false
           managed: false
