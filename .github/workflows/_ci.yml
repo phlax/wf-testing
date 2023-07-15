@@ -6,6 +6,9 @@ on:
       target:
         required: true
         type: string
+      rbe:
+        type: boolean
+        default: true
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}-${{ github.workflow }}-ci
@@ -25,5 +28,10 @@ jobs:
     - id: do_ci
       name: 'Run CI target ${{ inputs.target }}'
       run: |
-        echo "run CI target ..."
+        echo "run CI target  ${{ inputs.target }} ..."
+
+        run vars ...
+
+        echo " RBE: ${{ inputs.rbe }}"
+
       # setup RBE variables, similar to azp/bazel.yml
