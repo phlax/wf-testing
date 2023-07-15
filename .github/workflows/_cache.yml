@@ -30,6 +30,7 @@ jobs:
 
     - id: fetch_image
       run: |
+        echo "SKIP ME!!!"
         echo ${{ steps.cache-marker-restore.cache-hit }}
         echo "fetching build image: ${{ inputs.image_tag }} for cache!!!"
 
