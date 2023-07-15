@@ -6,6 +6,9 @@ on:
       image_tag:
         type: string
         required: true
+      version:
+        type: string
+        default: v000
 
 concurrency:
   group: cache_docker
@@ -26,9 +29,10 @@ jobs:
       with:
         path: |
           /tmp/cache-marker
-        key: ${{ inputs.image_tag }}-marker-v000
+        key: ${{ inputs.image_tag }}-${{ inputs.version }}-marker
 
     - id: fetch_image
+      if: steps.cache-marker-restore.outputs.cache-hit != true
       run: |
         echo "SKIP ME!!!"
         echo ${{ steps.cache-marker-restore.outputs.cache-hit }}
@@ -37,9 +41,10 @@ jobs:
         echo 1 > /tmp/cache-marker/marker
 
     - name: Save cache marker
+      if: steps.cache-marker-restore.outputs.cache-hit != true
       id: cache-marker-save
       uses: actions/cache/save@v3
       with:
         path: |
           /tmp/cache-marker
-        key: ${{ inputs.image_tag }}-marker-v000
+        key: ${{ inputs.image_tag }}-${{ inputs.version }}-marker
