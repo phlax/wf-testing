@@ -18,7 +18,8 @@ on:
 
 
 concurrency:
-  group: ${{ github.head_ref || github.run_id }}-${{ github.inputs.target }}-ci
+  # group: ${{ github.head_ref || github.run_id }}-${{ github.event.inputs.target }}-ci
+  group: ${{ github.event.inputs.target }}
   cancel-in-progress: true
 
 jobs:
