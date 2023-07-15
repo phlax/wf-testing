@@ -34,9 +34,9 @@ jobs:
 
         echo 1 /tmp/cache-marker/marker
 
-    - name: Restore cache marker
-      id: cache-marker-restore
-      uses: actions/cache/restore@v3
+    - name: Save cache marker
+      id: cache-marker-save
+      uses: actions/cache/save@v3
       with:
         path: |
           /tmp/cache-marker
