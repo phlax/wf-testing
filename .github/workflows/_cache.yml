@@ -18,6 +18,7 @@ jobs:
     - id: create-tmpfs
       run: |
         echo "CREATE TMPFS"
+        mkdir -p /tmp/cache-marker
 
     - name: Restore cache marker
       id: cache-marker-restore
@@ -32,7 +33,7 @@ jobs:
         echo ${{ steps.cache-marker-restore.cache-hit }}
         echo "fetching build image: ${{ inputs.image_tag }} for cache!!!"
 
-        echo 1 /tmp/cache-marker/marker
+        echo 1 > /tmp/cache-marker/marker
 
     - name: Save cache marker
       id: cache-marker-save
