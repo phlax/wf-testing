@@ -30,7 +30,7 @@ jobs:
       run: |
         echo "run CI target  ${{ inputs.target }} ..."
 
-        run vars ...
+        echo "run vars ..."
 
         echo " RBE: ${{ inputs.rbe }}"
 
