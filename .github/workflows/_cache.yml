@@ -1,0 +1,19 @@
+name: Cache (docker)
+
+on:
+  workflow_call:
+    inputs:
+      image_tag:
+        type: string
+        required: true
+
+concurrency:
+  group: cache_docker
+
+jobs:
+  cache:
+    runs-on: ubuntu-22.04
+    steps:
+    - id: build_image
+      script: |
+        echo "fetching build image: ${{ inputs.image_tag }} for cache!!!"
