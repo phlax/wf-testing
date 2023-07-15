@@ -29,5 +29,15 @@ jobs:
 
     - id: fetch_image
       run: |
-        echo ${{ steps.cache-marker-restore.restored }}
+        echo ${{ steps.cache-marker-restore.cache-hit }}
         echo "fetching build image: ${{ inputs.image_tag }} for cache!!!"
+
+        echo 1 /tmp/cache-marker/marker
+
+    - name: Restore cache marker
+      id: cache-marker-restore
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+          /tmp/cache-marker
+        key: ${{ inputs.image_tag }}-marker-v000
