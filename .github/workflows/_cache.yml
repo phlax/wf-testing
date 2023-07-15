@@ -65,9 +65,9 @@ jobs:
     - id: docker-save
       if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
       run: |
-        tar cf - -C /var/lib/docker . | sudo zstd - -T0 -o "/tmp/build-image-cache/docker.tar.zst"
+        sudo -s sh -c 'tar cf - -C /var/lib/docker . | zstd - -T0 -o "/tmp/build-image-cache/docker.tar.zst"'
 
-        ls -alh /tmp/build-image-cache/docker.tar.zst"
+        ls -alh "/tmp/build-image-cache/docker.tar.zst"
 
     - name: Save cache
       if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
