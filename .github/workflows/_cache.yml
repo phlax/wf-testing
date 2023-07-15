@@ -36,6 +36,7 @@ jobs:
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != true }}
       run: |
         echo "DO SKIP ME!!!"
+
         echo ${{ steps.cache-marker-restore.outputs.cache-hit }}
         echo "fetching build image: ${{ inputs.image_tag }} for cache!!!"
 
