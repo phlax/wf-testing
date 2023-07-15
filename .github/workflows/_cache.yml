@@ -60,13 +60,13 @@ jobs:
     - id: docker-save
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       run: |
-        echo ZSTD
+        echo ZSTD > "/tmp/build-image-cache/marker"
 
     - name: Save cache marker
-      if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'trueXXX' }}
+      if: ${{ steps.cache-marker-restore.outputs.cache-hit == 'trueXXX' }}
       id: cache-marker-save
       uses: actions/cache/save@v3
       with:
         path: |
-          /tmp/cache-marker
+          /tmp/build-image-cache
         key: ${{ inputs.image_tag }}-${{ inputs.version }}
