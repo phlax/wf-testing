@@ -21,11 +21,14 @@ permissions:
   contents: read
 
 jobs:
+  env:
+    uses: ./.github/workflows/env.yml
+    secrets: inherit
 
   # Runs untrusted code
   publish:
     runs-on: ubuntu-22.04
-    needs: check
+    needs: env
     steps:
     - run: |
         echo "Running a target ..."
