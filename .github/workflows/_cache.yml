@@ -33,7 +33,7 @@ jobs:
         key: ${{ inputs.image_tag }}-${{ inputs.version }}
 
     - id: fetch_image
-      if: ${{ steps.cache-marker-restore.outputs.cache-hit != true }}
+      if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       run: |
         echo "DO SKIP ME!!!"
 
