@@ -27,6 +27,11 @@ jobs:
         lookup-only: true
         key: ${{ inputs.image_tag }}-${{ inputs.version }}
 
+    - id: tmp-build-image-cache-create
+      if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
+      run: |
+        sudo mkdir -p /tmp/build-image-cache
+
     - id: docker-stop
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       run: |
@@ -56,7 +61,7 @@ jobs:
       run: |
         sudo systemctl stop docker
 
-    - id: tmp-build-image-cache
+    - id: tmp-build-image-cache-mount
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       run: |
         sudo mount -t tmpfs none /tmp/build-image-cache
