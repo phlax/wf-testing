@@ -15,5 +15,5 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - id: build_image
-      script: |
+      run: |
         echo "fetching build image: ${{ inputs.image_tag }} for cache!!!"
