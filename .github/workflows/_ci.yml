@@ -42,13 +42,8 @@ jobs:
       name: 'Run CI target ${{ inputs.target }}'
       run: |
         echo "run CI target  ${{ inputs.target }} ..."
-
-        echo "run vars ..."
-
-        echo " RBE: ${{ inputs.rbe }}"
-        echo " managed: ${{ inputs.rbe }}"
-        echo " bazel_extra: ${{ inputs.bazel_extra }}"
-
-        ${{ inputs.target }} '${{ inputs.command_ci }} ${{ inputs.target }}--testing'
-
-      # setup RBE variables, similar to azp/bazel.yml
+        if [[ -n "${{ inputs.command_prefix }}" ]]; then
+            ${{ inputs.command_prefix }} '${{ inputs.command_ci }} ${{ inputs.target }}--testing'
+        else
+            ${{ inputs.command_ci }} ${{ inputs.target }}--testing
+        fi
