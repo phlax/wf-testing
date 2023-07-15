@@ -34,7 +34,7 @@ concurrency:
 jobs:
   do_ci:
     runs-on: ubuntu-22.04
-    name: ./ci/do_ci.sh ${{ inputs.target }}
+    name: do_ci.sh ${{ inputs.target }}
     steps:
     - uses: actions/checkout@v3
     - name: Add safe directory
@@ -67,5 +67,3 @@ jobs:
         else
             ${{ inputs.command_ci }} ${{ inputs.target }}--testing
         fi
-      env:
-        ENVOY_DOCKER_PULL: 1
