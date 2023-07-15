@@ -28,16 +28,14 @@ jobs:
         lookup-only: true
         key: ${{ inputs.image_tag }}-${{ inputs.version }}
 
-    - id: tmp-build-image-cache-create
-      if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
+    - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
       run: |
         sudo mkdir -p /tmp/build-image-cache
 
     - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
       run: sudo systemctl stop docker
 
-    - id: docker-paths
-      if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
+    - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
       run: |
         sudo mv /var/lib/docker /var/lib/docker.orig
         sudo mkdir /var/lib/docker
@@ -47,23 +45,19 @@ jobs:
       run: |
         sudo systemctl start docker
 
-    - id: docker-fetch
-      if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
+    - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
       run: |
         docker pull ${{ inputs.image_tag }}
 
-    - id: docker-stop-again
-      if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
+    - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
       run: |
         sudo systemctl stop docker
 
-    - id: tmp-build-image-cache-mount
-      if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
+    - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
       run: |
         sudo mount -t tmpfs none /tmp/build-image-cache
 
-    - id: docker-save
-      if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
+    - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
       run: |
         sudo -s sh -c 'tar cf - -C /var/lib/docker . | zstd - -T0 -o "/tmp/build-image-cache/docker.tar.zst"'
 
@@ -71,7 +65,6 @@ jobs:
 
     - name: Save cache
       if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
-      id: cache-save
       uses: actions/cache/save@v3
       with:
         path: |
