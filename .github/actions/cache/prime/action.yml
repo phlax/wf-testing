@@ -1,0 +1,56 @@
+
+inputs:
+  cache_build_image:
+    type: string
+
+
+runs:
+  using: "composite"
+  steps:
+  - name: Restore cache
+    id: cache-restore
+    uses: actions/cache/restore@v3
+    with:
+      path: |
+        /tmp/build-image-cache
+      key: ${{ inputs.cache_build_image }}-v006
+
+  - run: |
+      sudo mkdir -p /tmp/build-image-cache
+    shell: bash
+
+  - name: Check cache
+    id: cache-restore
+    uses: actions/cache/restore@v3
+    with:
+      path: |
+        /tmp/build-image-cache
+      lookup-only: true
+      key: ${{ inputs.image_tag }}-${{ inputs.version }}
+
+  - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
+    run: |
+      sudo systemctl stop docker
+      sudo mv /var/lib/docker /var/lib/docker.orig
+      sudo mkdir /var/lib/docker
+      sudo systemctl start docker
+      docker pull ${{ inputs.image_tag }}
+      sudo systemctl stop docker
+      sudo mount -t tmpfs none /tmp/build-image-cache
+      sudo -s sh -c 'tar cf - -C /var/lib/docker . | zstd - -T0 -o "/tmp/build-image-cache/docker.tar.zst"'
+      sudo chown -R runner:docker /tmp/build-image-cache
+    shell: bash
+
+  - name: Save cache
+    if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
+    uses: actions/cache/save@v3
+    with:
+      path: |
+        /tmp/build-image-cache
+      key: ${{ inputs.image_tag }}-${{ inputs.version }}
+
+  - id: tmp-build-image-cache-umount
+    if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
+    run: |
+      sudo umount /tmp/build-image-cache
+    shell: bash
