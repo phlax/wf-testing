@@ -641,15 +641,6 @@ case $CI_TARGET in
         echo "version: $VERSION_DEV"
         ;;
 
-    publish-other--testing)
-        setup_clang_toolchain
-        BUILD_SHA="$(git rev-parse HEAD)"
-        VERSION_DEV="$(cut -d- -f2 < VERSION.txt)"
-
-        echo "sha: $BUILD_SHA"
-        echo "version: $VERSION_DEV"
-        ;;
-
     release)
         # When testing memory consumption, we want to test against exact byte-counts
         # where possible. As these differ between platforms and compile options, we
@@ -765,6 +756,10 @@ case $CI_TARGET in
         ;;
 
     verify_examples)
+        run_ci_verify "*" "win32-front-proxy|shared"
+        ;;
+
+    verify_examples--testing)
         run_ci_verify "*" "win32-front-proxy|shared"
         ;;
 

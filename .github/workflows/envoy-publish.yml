@@ -34,7 +34,7 @@ jobs:
         - target: publish
           rbe: true
           managed: true
-        - target: publish-other
+        - target: verify_examples
           rbe: false
           managed: false
     uses: ./.github/workflows/_ci.yml
