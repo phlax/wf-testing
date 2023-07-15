@@ -61,6 +61,7 @@ jobs:
       run: |
         sudo -s sh -c 'tar cf - -C /var/lib/docker . | zstd - -T0 -o "/tmp/build-image-cache/docker.tar.zst"'
 
+        id
         ls -alh "/tmp/build-image-cache/docker.tar.zst"
         sudo chown vsts:vsts /tmp/build-image-cache/docker.tar.zst
 
