@@ -53,4 +53,5 @@ jobs:
       target: ${{ matrix.target }}
       rbe: ${{ matrix.rbe }}
       managed: ${{ matrix.managed }}
+      cache_build_image: ${{ needs.env.outputs.build_image_ubuntu }}
     secrets: inherit
