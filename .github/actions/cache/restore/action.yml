@@ -25,3 +25,4 @@ runs:
       sudo -s sh -c 'zstd --stdout -d "/tmp/build-image-cache/docker.tar.zst" | tar -xf - -C /var/lib/docker'
       sudo systemctl start docker
       sudo umount /tmp/build-image-cache
+    shell: bash
