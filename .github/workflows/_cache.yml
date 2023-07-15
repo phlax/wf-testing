@@ -27,6 +27,8 @@ jobs:
       id: cache-marker-restore
       uses: actions/cache/restore@v3
       with:
+        path: |
+          /tmp/cache-marker
         lookup-only: true
         key: ${{ inputs.image_tag }}-${{ inputs.version }}
 
@@ -46,4 +48,4 @@ jobs:
       with:
         path: |
           /tmp/cache-marker
-        key: ${{ inputs.image_tag }}-${{ inputs.version }}-marker
+        key: ${{ inputs.image_tag }}-${{ inputs.version }}
