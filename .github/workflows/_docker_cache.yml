@@ -60,7 +60,7 @@ jobs:
     - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
       run: |
         sudo -s sh -c 'tar cf - -C /var/lib/docker . | zstd - -T0 -o "/tmp/build-image-cache/docker.tar.zst"'
-        sudo chown runner:docker /tmp/build-image-cache/docker.tar.zst
+        sudo chown -R runner:docker /tmp/build-image-cache
 
     - name: Save cache
       if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
