@@ -1,0 +1,38 @@
+name: Envoy/publish
+
+on:
+  # This runs untrusted code, do not expose secrets in the verify job
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git SHA ref to checkout"
+      sha:
+        description: "Git SHA of commit HEAD (ie last commit of PR)"
+      head_ref:
+        description: "Ref for grouping PRs"
+
+  pull_request:
+
+concurrency:
+  group: ${{ github.event.inputs.head_ref || github.run_id }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    uses: ./.github/workflows/workflow-start.yml
+    permissions:
+      contents: read
+      statuses: write
+    with:
+      workflowName: ${{ github.workflow }}
+
+  # Runs untrusted code
+  publish:
+    runs-on: ubuntu-22.04
+    needs: check
+    steps:
+    - run: |
+        echo "Running a target ..."
