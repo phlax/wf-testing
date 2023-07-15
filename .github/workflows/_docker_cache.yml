@@ -8,19 +8,19 @@ on:
         required: true
       version:
         type: string
-        default: v005
+        default: v006
 
 concurrency:
   # not sure about this
   group: cache_docker-${{ inputs.image_tag }}
 
 jobs:
+  # TODO(phlax): Move these to an action
   cache:
     runs-on: ubuntu-22.04
     steps:
 
-    - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
-      run: |
+    - run: |
         sudo mkdir -p /tmp/build-image-cache
 
     - name: Check cache
@@ -33,32 +33,14 @@ jobs:
         key: ${{ inputs.image_tag }}-${{ inputs.version }}
 
     - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
-      run: sudo systemctl stop docker
-
-    - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
-      run: |
-        sudo mv /var/lib/docker /var/lib/docker.orig
-        sudo mkdir /var/lib/docker
-
-    - id: docker-restart
-      if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
-      run: |
-        sudo systemctl start docker
-
-    - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
-      run: |
-        docker pull ${{ inputs.image_tag }}
-
-    - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
       run: |
         sudo systemctl stop docker
-
-    - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
-      run: |
+        sudo mv /var/lib/docker /var/lib/docker.orig
+        sudo mkdir /var/lib/docker
+        sudo systemctl start docker
+        docker pull ${{ inputs.image_tag }}
+        sudo systemctl stop docker
         sudo mount -t tmpfs none /tmp/build-image-cache
-
-    - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
-      run: |
         sudo -s sh -c 'tar cf - -C /var/lib/docker . | zstd - -T0 -o "/tmp/build-image-cache/docker.tar.zst"'
         sudo chown -R runner:docker /tmp/build-image-cache
 

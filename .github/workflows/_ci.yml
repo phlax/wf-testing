@@ -49,7 +49,7 @@ jobs:
       with:
         path: |
           /tmp/build-image-cache
-        key: ${{ inputs.cache_build_image }}-v005
+        key: ${{ inputs.cache_build_image }}-v006
     - run: |
         sudo systemctl stop docker
         sudo mv /var/lib/docker /var/lib/docker.orig
