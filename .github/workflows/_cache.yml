@@ -11,7 +11,7 @@ on:
         default: v002
 
 concurrency:
-  group: cache_docker
+  group: cache_docker-${{ inputs.image_tag }}
 
 jobs:
   cache:
