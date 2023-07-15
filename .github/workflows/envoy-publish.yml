@@ -33,11 +33,14 @@ jobs:
         target:
         - publish
         - publish-other
+        rbe:
+        - true
+        managed:
+        - true
         include:
         - target: publish-other
           rbe: false
           managed: false
-
     uses: ./.github/workflows/_ci.yml
     with:
       target: ${{ matrix.target }}
