@@ -29,6 +29,7 @@ jobs:
     needs:
     - env
     strategy:
+      fail-fast: false
       matrix:
         include:
         - target: publish
