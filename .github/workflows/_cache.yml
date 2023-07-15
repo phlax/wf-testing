@@ -23,23 +23,31 @@ jobs:
       uses: actions/cache/restore@v3
       with:
         path: |
-          /tmp/cache-marker
+          /tmp/build-image-cache
         lookup-only: true
         key: ${{ inputs.image_tag }}-${{ inputs.version }}
 
     - id: docker-stop
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       run: |
+        systemctl stop docker
         echo "DO SKIP ME!!!"
 
     - id: docker-paths
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       run: |
+        mv /var/lib/docker /var/lib/docker.orig
+
+        mkdir /var/lib/docker
+
+        ls -alh /var/lib/docker.orig
+
         echo "DO SKIP ME!!!"
 
     - id: docker-restart
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       run: |
+        systemctl start docker
         echo "DO SKIP ME!!!"
 
     - id: docker-fetch
@@ -50,20 +58,20 @@ jobs:
         echo ${{ steps.cache-marker-restore.outputs.cache-hit }}
         echo "fetching build image: ${{ inputs.image_tag }} for cache!!!"
 
-        echo 1 > /tmp/cache-marker/marker
+        docker pull ${{ inputs.image_tag }}
 
     - id: docker-stop-again
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       run: |
-        echo "DO SKIP ME!!!"
+        systemctl stop docker
 
     - id: docker-save
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       run: |
-        echo "DO SKIP ME!!!"
+        echo ZSTD
 
     - name: Save cache marker
-      if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
+      if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'trueXXX' }}
       id: cache-marker-save
       uses: actions/cache/save@v3
       with:
