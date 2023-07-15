@@ -11,6 +11,7 @@ runs:
       sudo mkdir -p /tmp/build-image-cache
       sudo mount -t tmpfs none /tmp/build-image-cache
       sudo chown -R runner:docker /tmp/build-image-cache
+    shell: bash
   - name: Restore cache
     id: cache-restore
     uses: actions/cache/restore@v3
