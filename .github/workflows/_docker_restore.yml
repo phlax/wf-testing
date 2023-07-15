@@ -1,0 +1,63 @@
+name: Cache (docker)
+
+on:
+  workflow_call:
+    inputs:
+      image_tag:
+        type: string
+        required: true
+      version:
+        type: string
+        default: v004
+
+# concurrency:
+  # not sure about this
+#   group: cache_docker-${{ inputs.image_tag }}
+
+jobs:
+  cache:
+    runs-on: ubuntu-22.04
+    steps:
+
+    - name: Restore cache
+      id: cache-restore
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+          /tmp/build-image-cache
+        key: ${{ inputs.image_tag }}-${{ inputs.version }}
+
+    - if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
+      run: |
+        sudo mkdir -p /tmp/build-image-cache
+
+    - if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
+      run: sudo systemctl stop docker
+
+    - if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
+      run: |
+        sudo mv /var/lib/docker /var/lib/docker.orig
+        sudo mkdir /var/lib/docker
+
+    - id: docker-restart
+      if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
+      run: |
+        sudo systemctl start docker
+
+    - if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
+      run: |
+        docker pull ${{ inputs.image_tag }}
+
+    - if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
+      run: |
+        sudo systemctl stop docker
+
+    - if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
+      run: |
+        sudo mount -t tmpfs none /tmp/build-image-cache
+
+    - if: ${{ steps.cache-restore.outputs.cache-hit == 'true' }}
+      run: |
+        sudo -s sh -c 'tar cf - -C /var/lib/docker . | zstd - -T0 -o "/tmp/build-image-cache/docker.tar.zst"'
+
+        ls -alh "/tmp/build-image-cache/docker.tar.zst"

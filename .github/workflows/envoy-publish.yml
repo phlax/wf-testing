@@ -27,13 +27,14 @@ jobs:
   cache:
     needs:
     - env
-    uses: ./.github/workflows/_cache.yml
+    uses: ./.github/workflows/_docker_cache.yml
     secrets: inherit
     with:
       image_tag: "${{ needs.env.outputs.build_image_ubuntu }}"
 
   ci:
     needs:
+    - env
     - cache
     strategy:
       fail-fast: false

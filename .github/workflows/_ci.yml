@@ -16,6 +16,9 @@ on:
         type: string
         default:
 
+      cache_build_image:
+        type: string
+
       command_prefix:
         type: string
         default: ./ci/run_envoy_docker.sh
@@ -29,8 +32,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  cache:
+    uses: ./.github/workflows/_docker_restore.yml
+    secrets: inherit
+    if: "${{ inputs.cache_build_image != '' }}"
+    with:
+      image_tag: "${{ inputs.cache_build_image }}"
+
   do_ci:
     runs-on: ubuntu-22.04
+    needs: cache
     name: ./ci/do_ci.sh ${{ inputs.target }}
     steps:
     - uses: actions/checkout@v3
