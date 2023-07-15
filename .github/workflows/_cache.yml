@@ -25,9 +25,9 @@ jobs:
       with:
         path: |
           /tmp/cache-marker
-        key: ${{ inputs.image_tage }}-marker-v000
+        key: ${{ inputs.image_tag }}-marker-v000
 
     - id: fetch_image
       run: |
-        echo ${{ steps.cache-marker-restore.outputs }}
+        echo ${{ steps.cache-marker-restore.restored }}
         echo "fetching build image: ${{ inputs.image_tag }} for cache!!!"
