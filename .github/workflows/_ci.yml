@@ -18,12 +18,11 @@ on:
 
 
 concurrency:
-  # group: ${{ github.head_ref || github.run_id }}-${{ github.event.inputs.target }}-ci
-  group: ${{ inputs.target }}
+  group: ${{ github.head_ref || github.run_id }}-${{ inputs.target }}-ci
   cancel-in-progress: true
 
 jobs:
-  repo:
+  do_ci:
     # if: github.repository == 'envoyproxy/envoy'
     runs-on: ubuntu-22.04
     steps:
