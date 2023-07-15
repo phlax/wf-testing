@@ -41,7 +41,7 @@ jobs:
       run: git config --global --add safe.directory /__w/envoy/envoy
     - run: |
         sudo mkdir -p /tmp/build-image-cache
-        sudo mount -t tmpfs none /tmp/build-image-cache
+        # sudo mount -t tmpfs none /tmp/build-image-cache
     - name: Restore cache
       id: cache-restore
       uses: actions/cache/restore@v3
