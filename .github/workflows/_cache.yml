@@ -14,6 +14,20 @@ jobs:
   cache:
     runs-on: ubuntu-22.04
     steps:
-    - id: build_image
+
+    - id: create tmpfs save directory
       run: |
+        echo "CREATE TMPFS"
+
+    - name: Restore cache marker
+      id: cache-marker-restore
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+          /tmp/cache-marker
+        key: ${{ inputs.image_tage }}-marker-v000
+
+    - id: fetch_image
+      run: |
+        echo ${{ steps.cache-marker-restore.outputs }}
         echo "fetching build image: ${{ inputs.image_tag }} for cache!!!"
