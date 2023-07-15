@@ -21,13 +21,6 @@ permissions:
   contents: read
 
 jobs:
-  check:
-    uses: ./.github/workflows/workflow-start.yml
-    permissions:
-      contents: read
-      statuses: write
-    with:
-      workflowName: ${{ github.workflow }}
 
   # Runs untrusted code
   publish:
