@@ -24,10 +24,17 @@ jobs:
   env:
     uses: ./.github/workflows/env.yml
     secrets: inherit
+  cache:
+    needs:
+    - env
+    uses: ./.github/workflows/_cache.yml
+    secrets: inherit
+    with:
+      image_tag: ${{ needs.env.outputs.envoy_build_ubuntu }}
 
   ci:
     needs:
-    - env
+    - cache
     strategy:
       fail-fast: false
       matrix:
