@@ -15,9 +15,47 @@ concurrency:
   group: cache_docker-${{ inputs.image_tag }}
 
 jobs:
+  # TODO(phlax): Move these to an action
   cache:
     runs-on: ubuntu-22.04
     steps:
     - uses: ./.github/actions/cache/prime
       with:
         cache_build_image: ${{ inputs.cache_build_image }}
+
+    - run: |
+        sudo mkdir -p /tmp/build-image-cache
+
+    - name: Check cache
+      id: cache-restore
+      uses: actions/cache/restore@v3
+      with:
+        path: |
+          /tmp/build-image-cache
+        lookup-only: true
+        key: ${{ inputs.image_tag }}-${{ inputs.version }}
+
+    - if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
+      run: |
+        sudo systemctl stop docker
+        sudo mv /var/lib/docker /var/lib/docker.orig
+        sudo mkdir /var/lib/docker
+        sudo systemctl start docker
+        docker pull ${{ inputs.image_tag }}
+        sudo systemctl stop docker
+        sudo mount -t tmpfs none /tmp/build-image-cache
+        sudo -s sh -c 'tar cf - -C /var/lib/docker . | zstd - -T0 -o "/tmp/build-image-cache/docker.tar.zst"'
+        sudo chown -R runner:docker /tmp/build-image-cache
+
+    - name: Save cache
+      if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
+      uses: actions/cache/save@v3
+      with:
+        path: |
+          /tmp/build-image-cache
+        key: ${{ inputs.image_tag }}-${{ inputs.version }}
+
+    - id: tmp-build-image-cache-umount
+      if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
+      run: |
+        sudo umount /tmp/build-image-cache
