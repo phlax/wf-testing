@@ -30,40 +30,32 @@ jobs:
     - id: docker-stop
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       run: |
-        systemctl stop docker
-        echo "DO SKIP ME!!!"
+        sudo systemctl stop docker
 
     - id: docker-paths
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       run: |
-        mv /var/lib/docker /var/lib/docker.orig
+        sudo mv /var/lib/docker /var/lib/docker.orig
 
-        mkdir /var/lib/docker
+        sudo mkdir /var/lib/docker
 
-        ls -alh /var/lib/docker.orig
-
+        sudo ls -alh /var/lib/docker.orig
         echo "DO SKIP ME!!!"
 
     - id: docker-restart
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       run: |
-        systemctl start docker
-        echo "DO SKIP ME!!!"
+        sudo systemctl start docker
 
     - id: docker-fetch
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       run: |
-        echo "DO SKIP ME!!!"
-
-        echo ${{ steps.cache-marker-restore.outputs.cache-hit }}
-        echo "fetching build image: ${{ inputs.image_tag }} for cache!!!"
-
         docker pull ${{ inputs.image_tag }}
 
     - id: docker-stop-again
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       run: |
-        systemctl stop docker
+        sudo systemctl stop docker
 
     - id: docker-save
       if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
