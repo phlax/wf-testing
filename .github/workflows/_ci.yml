@@ -39,25 +39,9 @@ jobs:
     - uses: actions/checkout@v3
     - name: Add safe directory
       run: git config --global --add safe.directory /__w/envoy/envoy
-    - run: |
-        sudo mkdir -p /tmp/build-image-cache
-        sudo mount -t tmpfs none /tmp/build-image-cache
-        sudo chown -R runner:docker /tmp/build-image-cache
-    - name: Restore cache
-      id: cache-restore
-      uses: actions/cache/restore@v3
+    - uses: ./.github/actions/cache/restore
       with:
-        path: |
-          /tmp/build-image-cache
-        key: ${{ inputs.cache_build_image }}-v006
-    - run: |
-        sudo systemctl stop docker
-        sudo mv /var/lib/docker /var/lib/docker.orig
-        sudo mkdir -p /var/lib/docker
-        sudo -s sh -c 'zstd --stdout -d "/tmp/build-image-cache/docker.tar.zst" | tar -xf - -C /var/lib/docker'
-        sudo systemctl start docker
-        sudo umount /tmp/build-image-cache
-
+        cache_build_image: ${{ inputs.cache_build_image }}
     - id: do_ci
       name: 'Run CI target ${{ inputs.target }}'
       run: |
