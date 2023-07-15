@@ -72,7 +72,7 @@ jobs:
         tar cf - -C /var/lib/docker . | zstd - -T0 -o "/tmp/build-image-cache/docker.tar.zst"
 
     - name: Save cache marker
-      if: ${{ steps.cache-marker-restore.outputs.cache-hit == 'true' }}
+      if: ${{ steps.cache-marker-restore.outputs.cache-hit != 'true' }}
       id: cache-marker-save
       uses: actions/cache/save@v3
       with:
