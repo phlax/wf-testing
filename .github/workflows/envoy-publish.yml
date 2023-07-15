@@ -33,7 +33,14 @@ jobs:
         target:
         - publish
         - publish-other
+        include:
+        - target: publish-other
+          rbe: false
+          managed: false
+
     uses: ./.github/workflows/_ci.yml
     with:
       target: ${{ matrix.target }}
+      rbe: ${{ matrix.rbe }}
+      managed: ${{ matrix.managed }}
     secrets: inherit
