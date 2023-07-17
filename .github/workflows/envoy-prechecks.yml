@@ -6,13 +6,6 @@ on:
     - main
     - release/v*
   pull_request:
-    paths:
-    - '**/requirements*.txt'
-    - '**/go.mod'
-    - '**/*.bzl'
-    - 'WORKSPACE'
-    - '.github/workflows/envoy-prechecks.yml'
-    - '.github/workflows/_*.yml'
 
 concurrency:
   group: ${{ github.event.inputs.head_ref || github.run_id }}-${{ github.workflow }}
