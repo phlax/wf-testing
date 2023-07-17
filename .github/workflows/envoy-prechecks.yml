@@ -1,4 +1,4 @@
-name: Envoy/prehecks
+name: Envoy/prechecks
 
 on:
   push:
