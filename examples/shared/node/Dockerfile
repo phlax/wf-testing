@@ -1,4 +1,4 @@
-FROM node:20.3-bullseye-slim@sha256:57ae74ffd7253c71b6e896ae585184d26446ba10e689a02921a1852d24d82d74 as node-base
+FROM node:23.1-bullseye-slim@sha256:df034b600d5edba788e7fc7e44b92452fe1b725481f843678ba5b476ecdb8db3 as node-base
 
 
 FROM node-base as node-http-auth
