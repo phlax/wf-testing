@@ -18,6 +18,8 @@ jobs:
         sudo umount /mnt
         sudo mkfs.ext4 -F "$DISK_NAME"
         sudo mount $DISKNAME /mnt
+        sudo fallocate -l 4G /mnt/swapfile
+        sudo chmod 600 /mnt/swapfile
         sudo mkswap /mnt/swapfile
         sudo swapon /mnt/swapfile
         df -h
