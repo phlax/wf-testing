@@ -1,0 +1,9 @@
+
+on:
+  pull_request:
+
+jobs:
+  mnt:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: envoyproxy/toolshed/gh-actions/github/remnt@bcc46aafda0e449880294f0b95eaf38eafc0f60b
