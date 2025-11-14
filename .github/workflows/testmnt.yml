@@ -14,4 +14,8 @@ jobs:
 
         cat /mnt/DATALOSS_WARNING_README.txt
 
+        free
+
+        sudo swapoff /mnt/swapfile
+
         sudo umount /mnt
