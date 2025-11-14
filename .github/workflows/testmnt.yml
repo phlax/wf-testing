@@ -1,0 +1,7 @@
+
+jobs:
+  mnt:
+    runs-on: ubuntu-24.04
+    steps:
+    - run: |
+        df -h
