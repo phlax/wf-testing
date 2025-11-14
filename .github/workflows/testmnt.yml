@@ -9,4 +9,7 @@ jobs:
     - run: |
         df -h
         mount
+
+        sudo ls -alh /mnt
+
         sudo umount /mnt
