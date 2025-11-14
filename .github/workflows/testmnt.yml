@@ -12,4 +12,6 @@ jobs:
 
         sudo ls -alh /mnt
 
+        cat /mnt/DATALOSS_WARNING_README.txt
+
         sudo umount /mnt
