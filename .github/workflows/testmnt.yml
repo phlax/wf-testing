@@ -8,6 +8,10 @@ jobs:
     steps:
     - run: |
         df -h
+
+        DISK_NAME=$(findmnt -n -o SOURCE --target /mnt)
+
+
         mount
 
         sudo ls -alh /mnt
@@ -19,3 +23,7 @@ jobs:
         sudo swapoff /mnt/swapfile
 
         sudo umount /mnt
+
+        mount
+
+        echo "$DISK_NAME"
