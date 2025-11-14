@@ -6,23 +6,4 @@ jobs:
   mnt:
     runs-on: ubuntu-24.04
     steps:
-    - run: |
-
-        DISK_NAME=$(findmnt -n -o SOURCE --target /mnt)
-
-        df -h
-        mount
-        sudo ls -alh /mnt
-        free
-        sudo swapoff /mnt/swapfile
-        sudo umount /mnt
-        sudo mkfs.ext4 -F "$DISK_NAME"
-        sudo mount $DISKNAME /mnt
-        sudo fallocate -l 4G /mnt/swapfile
-        sudo chmod 600 /mnt/swapfile
-        sudo mkswap /mnt/swapfile
-        sudo swapon /mnt/swapfile
-        df -h
-        mount
-        sudo ls -alh /mnt
-        free
+    - uses: envoyproxy/toolshed/gh-actions/github/remnt@bcc46aafda0e449880294f0b95eaf38eafc0f60b
