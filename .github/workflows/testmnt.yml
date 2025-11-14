@@ -13,12 +13,14 @@ jobs:
         df -h
         mount
         sudo ls -alh /mnt
-        cat /mnt/DATALOSS_WARNING_README.txt
         free
         sudo swapoff /mnt/swapfile
         sudo umount /mnt
         sudo mkfs.ext4 -F "$DISK_NAME"
         sudo mount $DISKNAME /mnt
-
+        sudo mkswap /mnt/swapfile
+        sudo swapon /mnt/swapfile
         df -h
         mount
+        sudo ls -alh /mnt
+        free
